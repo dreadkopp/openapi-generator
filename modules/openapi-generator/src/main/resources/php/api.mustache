@@ -632,9 +632,13 @@ use {{invokerPackage}}\ObjectSerializer;
 
         $headers = array_merge(
             $defaultHeaders,
-            $headerParams,
-            $headers
+            $headers,
+            $headerParams
         );
+
+        if($httpBody instanceof \SplFileObject) {
+            $headers['Content-Length'] = (string)$body->getSize();
+        }
 
         {{#servers.0}}
         $operationHosts = [{{#servers}}"{{{url}}}"{{^-last}}, {{/-last}}{{/servers}}];
